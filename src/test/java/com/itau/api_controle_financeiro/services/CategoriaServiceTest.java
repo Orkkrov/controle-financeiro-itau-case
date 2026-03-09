@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 class CategoriaServiceTest {
     @Test
-    void deveRetornarUnauthirized401() {
+    void deveRetornarUnauthorized401() {
         String chaveApi = "chave-teste";
         long statusCode = 200l;
 

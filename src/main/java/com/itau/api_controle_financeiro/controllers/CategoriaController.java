@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/v1")
@@ -19,22 +20,34 @@ public class CategoriaController {
         this.categoriaService = categoriaService;
     }
 
-    @GetMapping("/teste")
-    public String teste(){
-        return "rodando";
-    }
-
 
 
     @PostMapping("/categoria")
-    public ResponseEntity<CategoriaDto> criaCategoria(@RequestBody CategoriaEntity categoriaEntity, @RequestHeader("api-key") String chaveApi){
+    public ResponseEntity<Object> criaCategoria(@RequestBody CategoriaEntity categoriaEntity, @RequestHeader("api-key") String chaveApi){
         return this.categoriaService.salvaCategoria(categoriaEntity, chaveApi);
     }
 
+    @GetMapping("/categoria/{id}")
+    public ResponseEntity<Object> retornaCategoriaPeloId(@PathVariable Long id, @RequestHeader(value = "api-key") String chaveApi){
+        return this.categoriaService.retornaCategoriaPeloId(id, chaveApi);
+    }
+
+
     @GetMapping("/categoria")
-    public List<CategoriaEntity> criaCategoria(@RequestHeader("api-key") String chaveApi){
+    public ResponseEntity<Object> retornaCategorias(@RequestHeader(value = "api-key") String chaveApi){
         return this.categoriaService.retornaCategorias(chaveApi);
     }
+
+    @DeleteMapping("/categoria/{id}")
+    public ResponseEntity<Object> criaCategoria(@PathVariable Long id, @RequestHeader(value = "api-key") String chaveApi){
+        return this.categoriaService.deletaCategoriaPeloId(id, chaveApi);
+    }
+
+    @PutMapping("/categoria/{id}")
+    public ResponseEntity<Object> atualizaCategoria(@PathVariable Long id, @RequestHeader(value = "api-key") String chaveApi, @RequestBody CategoriaEntity categoriaAtualizada){
+       return this.categoriaService.atualizaCategoria(id, chaveApi, categoriaAtualizada);
+    }
+
 
 
 }

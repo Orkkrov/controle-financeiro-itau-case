@@ -13,6 +13,14 @@ public class CategoriaEntity {
     @Column(nullable = false, unique = true)
     private String nome;
 
+    public CategoriaEntity() {
+    }
+
+    public CategoriaEntity(Long id_categoria, String nome) {
+        this.nome = nome;
+        this.id_categoria = id_categoria;
+    }
+
     public Long getId_categoria() {
         return id_categoria;
     }

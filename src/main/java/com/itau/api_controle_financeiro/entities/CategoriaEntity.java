@@ -14,7 +14,7 @@ public class CategoriaEntity {
     private Long idCategoria;
     @Column(nullable = false, unique = true)
     private String nome;
-    @OneToMany(mappedBy = "idCategoria")
+    @OneToMany(mappedBy = "idCategoria", cascade = CascadeType.ALL)
     private List<SubCategoriaEntity> subCategorias;
 
     public CategoriaEntity() {

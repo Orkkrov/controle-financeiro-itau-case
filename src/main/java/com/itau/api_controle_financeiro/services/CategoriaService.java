@@ -3,7 +3,6 @@ package com.itau.api_controle_financeiro.services;
 import com.itau.api_controle_financeiro.dtos.ApiResposta;
 import com.itau.api_controle_financeiro.dtos.CategoriaDto;
 import com.itau.api_controle_financeiro.entities.CategoriaEntity;
-import com.itau.api_controle_financeiro.exceptions.CategoriaInexistenteException;
 import com.itau.api_controle_financeiro.repositories.CategoriaRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,18 +27,14 @@ public class CategoriaService {
 
     public ResponseEntity<Object> salvaCategoria(CategoriaEntity categoriaEntity, String chaveApi) {
         if (!tokenValido(chaveApi)) return new ResponseEntity<>(new ApiResposta("erro_validacao", "token invalido " + chaveApi), HttpStatus.UNAUTHORIZED);
-
-
-        CategoriaDto categoriaDto = null;
         try {
             log.info("vai criar categoria com o nome {}" , categoriaEntity.getNome());
             categoriaEntity = this.categoriaRepository.save(categoriaEntity);
-            categoriaDto = new CategoriaDto(categoriaEntity.getIdCategoria(), categoriaEntity.getNome());
         } catch (RuntimeException e) {
             return new ResponseEntity<>(new ApiResposta("erro_criacao", "categoria "+categoriaEntity.getNome()+" ja existe"), HttpStatus.BAD_REQUEST);
         }
 
-        return new ResponseEntity<>(categoriaDto, HttpStatus.CREATED);
+        return new ResponseEntity<>(categoriaEntity, HttpStatus.CREATED);
     }
 
 
@@ -52,14 +47,14 @@ public class CategoriaService {
 
 
     public ResponseEntity<Object> retornaCategoriaPeloId(Long id, String chaveApi) {
-        if (!tokenValido(chaveApi)) return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        if (!tokenValido(chaveApi)) return new ResponseEntity<>(new ApiResposta("erro_validacao", "token invalido " + chaveApi), HttpStatus.UNAUTHORIZED);
 
         log.info("vai retornar a categoria com o id{}" , id);
         Optional<CategoriaEntity> categoria = this.categoriaRepository.findById(id);
 
-        if (categoria.isPresent()) return new ResponseEntity<>(categoria, HttpStatus.OK);
+        if (categoria.isPresent()) return new ResponseEntity<>(categoria.get(), HttpStatus.OK);
 
-        return  new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return  new ResponseEntity<>(new ApiResposta("erro_categoria", "id "+id+" de categoria nao existe"), HttpStatus.BAD_REQUEST);
     }
 
 
@@ -74,9 +69,11 @@ public class CategoriaService {
             log.info("vai deletar a categoria com o id{}" , id);
              this.categoriaRepository.deleteById(id);
              return new ResponseEntity<>(new ApiResposta("resposta" , "categoria excluida"), HttpStatus.OK);
-        }catch (CategoriaInexistenteException c) {
+        }catch (RuntimeException r) {
 
-            return new ResponseEntity<>(new ApiResposta("erro_deletar","CATEGORIA NAO EXISTE" ) , HttpStatus.BAD_REQUEST);
+
+            log.warn("categoria com o id{} nao existe" , id);
+            return new ResponseEntity<>(new ApiResposta("erro_deletar","categoria nao existe" ) , HttpStatus.BAD_REQUEST);
         }
     }
 

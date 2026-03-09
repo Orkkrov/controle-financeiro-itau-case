@@ -1,6 +1,6 @@
 CREATE TABLE subcategoria (
     id_subCategoria BIGINT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(255) NOT NULL,
+    nome VARCHAR(255) NOT NULL UNIQUE,
     id_categoria INT NOT NULL,
 
     CONSTRAINT fk_subCategoria_categoria

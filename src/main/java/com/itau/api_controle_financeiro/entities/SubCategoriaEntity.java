@@ -12,7 +12,7 @@ public class SubCategoriaEntity {
     @Column(name = "id_subCategoria")
     private Long idSubcategoria;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String nome;
 
     @ManyToOne

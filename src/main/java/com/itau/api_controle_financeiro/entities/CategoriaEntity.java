@@ -2,6 +2,7 @@ package com.itau.api_controle_financeiro.entities;
 
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "categoria")
@@ -9,24 +10,27 @@ public class CategoriaEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id_categoria;
+    @Column(name = "id_categoria")
+    private Long idCategoria;
     @Column(nullable = false, unique = true)
     private String nome;
+    @OneToMany(mappedBy = "idCategoria")
+    private List<SubCategoriaEntity> subCategorias;
 
     public CategoriaEntity() {
     }
 
-    public CategoriaEntity(Long id_categoria, String nome) {
+    public CategoriaEntity(Long idCategoria, String nome) {
         this.nome = nome;
-        this.id_categoria = id_categoria;
+        this.idCategoria = idCategoria;
     }
 
-    public Long getId_categoria() {
-        return id_categoria;
+    public Long getIdCategoria() {
+        return idCategoria;
     }
 
-    public void setId_categoria(Long id_categoria) {
-        this.id_categoria = id_categoria;
+    public void setIdCategoria(Long idCategoria) {
+        this.idCategoria = idCategoria;
     }
 
     public String getNome() {
@@ -37,11 +41,14 @@ public class CategoriaEntity {
         this.nome = nome;
     }
 
+
+
     @Override
     public String toString() {
         return "CategoriaEntity{" +
-                "id_categoria=" + id_categoria +
+                "idCategoria=" + idCategoria +
                 ", nome='" + nome + '\'' +
+                ", subCategorias=" + subCategorias +
                 '}';
     }
 }

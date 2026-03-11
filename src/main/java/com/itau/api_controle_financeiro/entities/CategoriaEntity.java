@@ -20,6 +20,10 @@ public class CategoriaEntity {
     public CategoriaEntity() {
     }
 
+    public CategoriaEntity(Long idCategoria) {
+        this.idCategoria = idCategoria;
+    }
+
     public CategoriaEntity(Long idCategoria, String nome) {
         this.nome = nome;
         this.idCategoria = idCategoria;

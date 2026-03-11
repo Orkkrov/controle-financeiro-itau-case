@@ -1,20 +1,21 @@
 package com.itau.api_controle_financeiro.dtos;
 
 public class CategoriaDto {
-    private Long id_categoria;
+    private Long idSubcategoria;
+    private Long idCategoria;
     private String nome;
 
-    public CategoriaDto(Long id_categoria, String nome) {
-        this.id_categoria = id_categoria;
+    public CategoriaDto(Long idCategoria, String nome) {
+        this.idCategoria = idCategoria;
         this.nome = nome;
     }
 
-    public Long getId_categoria() {
-        return id_categoria;
+    public Long getIdCategoria() {
+        return idCategoria;
     }
 
     public void setId_categoria(Long id_categoria) {
-        this.id_categoria = id_categoria;
+        this.idCategoria = idCategoria;
     }
 
     public String getNome() {
@@ -23,5 +24,17 @@ public class CategoriaDto {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public Long getIdSubcategoria() {
+        return idSubcategoria;
+    }
+
+    public void setIdSubcategoria(Long idSubcategoria) {
+        this.idSubcategoria = idSubcategoria;
+    }
+
+    public void setIdCategoria(Long idCategoria) {
+        this.idCategoria = idCategoria;
     }
 }

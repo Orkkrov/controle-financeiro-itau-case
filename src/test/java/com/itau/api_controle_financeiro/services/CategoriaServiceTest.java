@@ -30,9 +30,6 @@ class CategoriaServiceTest {
     @InjectMocks
     private CategoriaService categoriaService;
 
-
-    private final String TOKEN_VALIDO = "aXRhw7o=";
-
     @BeforeEach
     void setup() {
         MockitoAnnotations.initMocks(this);
@@ -41,31 +38,18 @@ class CategoriaServiceTest {
     @Test
     void deveSalvarCategoria() {
 
-        CategoriaEntity categoria = new CategoriaEntity(1l, "Saude");
+        CategoriaEntity categoria = new CategoriaEntity(1l, "t6es");
 
-        CategoriaEntity categoriaSalva = new CategoriaEntity(1L, "Alimentação");
+        CategoriaEntity categoriaSalva = new CategoriaEntity(1L, "t6ess");
 
         when(categoriaRepository.save(any())).thenReturn(categoriaSalva);
 
         ResponseEntity<Object> resposta =
-                categoriaService.salvaCategoria(categoria, TOKEN_VALIDO);
+                categoriaService.salvaCategoria(categoria);
 
         assertEquals(201, resposta.getStatusCodeValue());
 
         verify(categoriaRepository, times(1)).save(any());
-    }
-
-    @Test
-    void naoDeveSalvarCategoriaTokenInvalido() {
-
-        CategoriaEntity categoria = new CategoriaEntity(1l, "Alimentação");
-
-        ResponseEntity<Object> resposta =
-                categoriaService.salvaCategoria(categoria, "token_errado");
-
-        assertEquals(401, resposta.getStatusCodeValue());
-
-        verify(categoriaRepository, never()).save(any());
     }
 
     @Test
@@ -76,7 +60,7 @@ class CategoriaServiceTest {
                 .thenReturn(Arrays.asList(new CategoriaEntity(1L, "Casa")));
 
         ResponseEntity<Object> resposta =
-                categoriaService.retornaCategorias(TOKEN_VALIDO);
+                categoriaService.retornaCategorias();
 
         assertEquals(200, resposta.getStatusCodeValue());
 
@@ -92,7 +76,7 @@ class CategoriaServiceTest {
                 .thenReturn(Optional.of(categoria));
 
         ResponseEntity<Object> resposta =
-                categoriaService.retornaCategoriaPeloId(1L, TOKEN_VALIDO);
+                categoriaService.retornaCategoriaPeloId(1L);
 
         assertEquals(200, resposta.getStatusCodeValue());
     }
@@ -104,7 +88,7 @@ class CategoriaServiceTest {
                 .thenReturn(Optional.empty());
 
         ResponseEntity<Object> resposta =
-                categoriaService.retornaCategoriaPeloId(1L, TOKEN_VALIDO);
+                categoriaService.retornaCategoriaPeloId(1L);
 
         assertEquals(400, resposta.getStatusCodeValue());
 
@@ -119,7 +103,7 @@ class CategoriaServiceTest {
         doNothing().when(categoriaRepository).deleteById(1L);
 
         ResponseEntity<Object> resposta =
-                categoriaService.deletaCategoriaPeloId(1L, TOKEN_VALIDO);
+                categoriaService.deletaCategoriaPeloId(1L);
 
         assertEquals(200, resposta.getStatusCodeValue());
 
@@ -132,7 +116,7 @@ class CategoriaServiceTest {
                 .when(categoriaRepository).deleteById(1L);
 
         ResponseEntity<Object> resposta =
-                categoriaService.deletaCategoriaPeloId(1L, TOKEN_VALIDO);
+                categoriaService.deletaCategoriaPeloId(1L);
 
         assertEquals(400, resposta.getStatusCodeValue());
     }
@@ -148,7 +132,7 @@ class CategoriaServiceTest {
         CategoriaEntity nova = new CategoriaEntity(1l,"Nova");
 
         ResponseEntity<Object> resposta =
-                categoriaService.atualizaCategoria(1L, TOKEN_VALIDO, nova);
+                categoriaService.atualizaCategoria(1L, nova);
 
         assertEquals(200, resposta.getStatusCodeValue());
 

@@ -26,6 +26,16 @@ public class SubCategoriaEntity {
     public SubCategoriaEntity() {
     }
 
+    public SubCategoriaEntity(Long idSubcategoria,String nome) {
+        this.idSubcategoria = idSubcategoria;
+        this.nome = nome;
+    }
+
+    public SubCategoriaEntity(String nome, CategoriaEntity idCategoria) {
+        this.nome = nome;
+        this.idCategoria = idCategoria;
+    }
+
     public SubCategoriaEntity(Long idSubcategoria, String nome, CategoriaEntity idCategoria, List<LancamentoEntity> lancamentos) {
         this.idSubcategoria = idSubcategoria;
         this.nome = nome;
@@ -64,4 +74,6 @@ public class SubCategoriaEntity {
     public void setLancamentos(List<LancamentoEntity> lancamentos) {
         this.lancamentos = lancamentos;
     }
+
+
 }

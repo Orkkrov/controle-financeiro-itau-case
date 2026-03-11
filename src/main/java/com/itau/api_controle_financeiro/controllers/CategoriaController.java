@@ -17,29 +17,29 @@ public class CategoriaController {
 
 
     @PostMapping("/categoria")
-    public ResponseEntity<Object> criaCategoria(@RequestBody CategoriaEntity categoriaEntity, @RequestHeader("api-key") String chaveApi){
-        return this.categoriaService.salvaCategoria(categoriaEntity, chaveApi);
+    public ResponseEntity<Object> criaCategoria(@RequestBody CategoriaEntity categoriaEntity){
+        return this.categoriaService.salvaCategoria(categoriaEntity);
     }
 
-    @GetMapping("/categoria/{id}")
-    public ResponseEntity<Object> retornaCategoriaPeloId(@PathVariable Long id, @RequestHeader(value = "api-key") String chaveApi){
-        return this.categoriaService.retornaCategoriaPeloId(id, chaveApi);
+    @GetMapping("/categoria/{id_categoria}")
+    public ResponseEntity<Object> retornaCategoriaPeloId(@PathVariable Long id_categoria){
+        return this.categoriaService.retornaCategoriaPeloId(id_categoria);
     }
 
 
     @GetMapping("/categoria")
-    public ResponseEntity<Object> retornaCategorias(@RequestHeader(value = "api-key") String chaveApi){
-        return this.categoriaService.retornaCategorias(chaveApi);
+    public ResponseEntity<Object> retornaCategorias(){
+        return this.categoriaService.retornaCategorias();
     }
 
-    @DeleteMapping("/categoria/{id}")
-    public ResponseEntity<Object> criaCategoria(@PathVariable Long id, @RequestHeader(value = "api-key") String chaveApi){
-        return this.categoriaService.deletaCategoriaPeloId(id, chaveApi);
+    @DeleteMapping("/categoria/{id_categoria}")
+    public ResponseEntity<Object> criaCategoria(@PathVariable Long id_categoria){
+        return this.categoriaService.deletaCategoriaPeloId(id_categoria);
     }
 
-    @PutMapping("/categoria/{id}")
-    public ResponseEntity<Object> atualizaCategoria(@PathVariable Long id, @RequestHeader(value = "api-key") String chaveApi, @RequestBody CategoriaEntity categoriaAtualizada){
-       return this.categoriaService.atualizaCategoria(id, chaveApi, categoriaAtualizada);
+    @PutMapping("/categoria/{id_categoria}")
+    public ResponseEntity<Object> atualizaCategoria(@PathVariable Long id_categoria, @RequestBody CategoriaEntity categoriaAtualizada){
+       return this.categoriaService.atualizaCategoria(id_categoria,  categoriaAtualizada);
     }
 
 

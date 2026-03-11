@@ -25,8 +25,7 @@ public class CategoriaService {
         this.categoriaRepository = categoriaRepository;
     }
 
-    public ResponseEntity<Object> salvaCategoria(CategoriaEntity categoriaEntity, String chaveApi) {
-        if (!tokenValido(chaveApi)) return new ResponseEntity<>(new ApiResposta("erro_validacao", "token invalido " + chaveApi), HttpStatus.UNAUTHORIZED);
+    public ResponseEntity<Object> salvaCategoria(CategoriaEntity categoriaEntity) {
         try {
             log.info("vai criar categoria com o nome {}" , categoriaEntity.getNome());
             categoriaEntity = this.categoriaRepository.save(categoriaEntity);
@@ -38,16 +37,14 @@ public class CategoriaService {
     }
 
 
-    public ResponseEntity<Object> retornaCategorias(String chaveApi){
-        if (!tokenValido(chaveApi)) return new ResponseEntity<>(new ApiResposta("erro_validacao", "token invalido " + chaveApi), HttpStatus.UNAUTHORIZED);
+    public ResponseEntity<Object> retornaCategorias(){
 
         log.info("vai retornar todas as categorias");
         return new ResponseEntity<>(this.categoriaRepository.findAll(), HttpStatus.OK) ;
     }
 
 
-    public ResponseEntity<Object> retornaCategoriaPeloId(Long id, String chaveApi) {
-        if (!tokenValido(chaveApi)) return new ResponseEntity<>(new ApiResposta("erro_validacao", "token invalido " + chaveApi), HttpStatus.UNAUTHORIZED);
+    public ResponseEntity<Object> retornaCategoriaPeloId(Long id) {
 
         log.info("vai retornar a categoria com o id{}" , id);
         Optional<CategoriaEntity> categoria = this.categoriaRepository.findById(id);
@@ -58,14 +55,9 @@ public class CategoriaService {
     }
 
 
-    public boolean tokenValido(String chaveApi) {
-        return chaveApi.equals("aXRhw7o=");
-    }
 
-
-    public ResponseEntity<Object> deletaCategoriaPeloId(Long id, String chaveApi) {
-        if (!tokenValido(chaveApi)) return new ResponseEntity<>(new ApiResposta("erro_validacao", "token invalido " + chaveApi), HttpStatus.UNAUTHORIZED);
-        try{
+    public ResponseEntity<Object> deletaCategoriaPeloId(Long id) {
+      try{
             log.info("vai deletar a categoria com o id{}" , id);
              this.categoriaRepository.deleteById(id);
              return new ResponseEntity<>(new ApiResposta("resposta" , "categoria excluida"), HttpStatus.OK);
@@ -77,8 +69,7 @@ public class CategoriaService {
         }
     }
 
-    public ResponseEntity<Object>  atualizaCategoria(Long id, String chaveApi, CategoriaEntity categoriaAtualizada) {
-        if (!tokenValido(chaveApi)) return new ResponseEntity<>(new ApiResposta("erro_validacao", "token invalido " + chaveApi), HttpStatus.UNAUTHORIZED);
+    public ResponseEntity<Object>  atualizaCategoria(Long id, CategoriaEntity categoriaAtualizada) {
 
         log.info("vai atualizar a categoria com o id {} com o nome {}" , id, categoriaAtualizada.getNome());
         Optional<CategoriaEntity> categoriaAntiga = this.categoriaRepository.findById(id);

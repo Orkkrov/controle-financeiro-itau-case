@@ -21,19 +21,19 @@ public class LancamentoEntity {
     private LocalDate data;
 
     @ManyToOne
-    @JoinColumn(name="id_subCategoria")
-    private SubCategoriaEntity subCategoria;
+    @JoinColumn(name="id_subcategoria")
+    private SubCategoriaEntity subcategoria;
 
     private String comentario;
 
     public LancamentoEntity() {
     }
 
-    public LancamentoEntity(Long idLancamento, BigDecimal valor, LocalDate data, SubCategoriaEntity subCategoria, String comentario) {
+    public LancamentoEntity(Long idLancamento, BigDecimal valor, LocalDate data, SubCategoriaEntity subcategoria, String comentario) {
         this.idLancamento = idLancamento;
         this.valor = valor;
         this.data = data;
-        this.subCategoria = subCategoria;
+        this.subcategoria = subcategoria;
         this.comentario = comentario;
     }
 
@@ -62,11 +62,11 @@ public class LancamentoEntity {
     }
 
     public SubCategoriaEntity getSubCategoria() {
-        return subCategoria;
+        return subcategoria;
     }
 
     public void setSubCategoria(SubCategoriaEntity subCategoria) {
-        this.subCategoria = subCategoria;
+        this.subcategoria = subCategoria;
     }
 
     public String getComentario() {

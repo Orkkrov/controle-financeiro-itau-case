@@ -9,7 +9,7 @@ public class SubCategoriaEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_subCategoria")
+    @Column(name = "id_subcategoria")
     private Long idSubcategoria;
 
     @Column(nullable = false, unique = true)
@@ -19,7 +19,7 @@ public class SubCategoriaEntity {
     @JoinColumn(name="id_categoria")
     private CategoriaEntity idCategoria;
 
-    @OneToMany(mappedBy = "subCategoria")
+    @OneToMany(mappedBy = "subcategoria")
     private List<LancamentoEntity> lancamentos;
 
 

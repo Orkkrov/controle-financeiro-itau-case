@@ -15,6 +15,6 @@ public interface CategoriaRepository extends JpaRepository<CategoriaEntity, Long
 
     @Modifying
     @Transactional
-    @Query(value = "UPDATE categoria SET nome = :nomeCategoria WHERE idCategoria = :id", nativeQuery = true)
+    @Query(value = "UPDATE categoria SET nome = :nomeCategoria WHERE id_categoria = :id", nativeQuery = true)
     void atualizaCategoria(@Param("id")Long id, @Param("nomeCategoria") String nomeCategoria);
 }

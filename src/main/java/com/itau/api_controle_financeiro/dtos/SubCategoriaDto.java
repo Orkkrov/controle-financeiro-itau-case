@@ -13,6 +13,12 @@ public class SubCategoriaDto {
         this.idCategoria = idCategoria;
     }
 
+    public SubCategoriaDto(Long idSubcategoria, String nome, Long idCategoria) {
+        this.idSubcategoria= idSubcategoria;
+        this.nome= nome;
+        this.idCategoria= idCategoria;
+    }
+
     public Long getIdSubcategoria() {
         return idSubcategoria;
     }

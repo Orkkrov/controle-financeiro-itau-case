@@ -62,8 +62,7 @@ public class CategoriaService {
              this.categoriaRepository.deleteById(id);
              return new ResponseEntity<>(new ApiResposta("resposta" , "categoria excluida"), HttpStatus.OK);
         }catch (RuntimeException r) {
-
-
+          r.printStackTrace();
             log.warn("categoria com o id{} nao existe" , id);
             return new ResponseEntity<>(new ApiResposta("erro_deletar","categoria nao existe" ) , HttpStatus.BAD_REQUEST);
         }

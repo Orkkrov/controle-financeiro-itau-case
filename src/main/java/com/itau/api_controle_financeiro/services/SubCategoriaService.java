@@ -4,15 +4,17 @@ import com.itau.api_controle_financeiro.dtos.ApiResposta;
 import com.itau.api_controle_financeiro.dtos.SubCategoriaDto;
 import com.itau.api_controle_financeiro.entities.CategoriaEntity;
 import com.itau.api_controle_financeiro.entities.SubCategoriaEntity;
-import com.itau.api_controle_financeiro.exception.CategoriaNaoExisteException;
+import com.itau.api_controle_financeiro.projection.SubCategoriaProjection;
 import com.itau.api_controle_financeiro.repositories.SubCategoriaRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class SubCategoriaService {
@@ -38,13 +40,23 @@ public class SubCategoriaService {
         subCategoria.setNome(subCategoriaDto.getNome());
         subCategoria.setIdCategoria(categoria);
 
+        try {
+            subCategoria = subCategoriaRepository.save(subCategoria);
+        } catch (DataIntegrityViolationException e) {
 
-        try{
-            subCategoria = this.subCategoriaRepository.save(subCategoria);
-        } catch (CategoriaNaoExisteException s) {
-           log.error(s.getMessage());
-            return new ResponseEntity<>(new ApiResposta("erro_categoria","categoria id "+subCategoriaDto.getIdCategoria()+" nao existe"),HttpStatus.BAD_REQUEST);
+            log.error(e.getMessage());
+            if(!this.subCategoriaRepository.existsById(subCategoriaDto.getIdCategoria())){
+                return new ResponseEntity<>(new ApiResposta("erro_requisicao","categoria nao existe"),HttpStatus.BAD_REQUEST);
+
+            }
+
+            if(subCategoriaRepository.existsByNome(subCategoriaDto.getNome())){
+                return new ResponseEntity<>(new ApiResposta("erro_requisicao","subcategoria ja existe"),HttpStatus.BAD_REQUEST);
+            }
+
+
         }
+
 
         subCategoriaDto.setIdSubcategoria(subCategoria.getIdSubcategoria());
 
@@ -52,11 +64,26 @@ public class SubCategoriaService {
     }
 
     public ResponseEntity<Object> retornaSubcategorias(){
-        return new ResponseEntity<>(this.subCategoriaRepository.findAll(), HttpStatus.OK);
+            return new ResponseEntity<>(this.subCategoriaRepository.retornaSubCategorias()
+                    .stream()
+                    .map(p -> new SubCategoriaDto(
+                            p.getIdSubcategoria(),
+                            p.getNome(),
+                            p.getIdCategoria()))
+                    .collect(Collectors.toList()), HttpStatus.OK);
+
     }
 
     public ResponseEntity<Object> retornaSubcategoriaPeloId(Long id){
-        return new ResponseEntity<>(this.subCategoriaRepository.findById(id), HttpStatus.OK);
+        Optional<SubCategoriaProjection> subCategoriaProjection = this.subCategoriaRepository.retornaSubCategoriaPeloID(id);
+        if (subCategoriaProjection.isPresent()) {
+            SubCategoriaProjection s = subCategoriaProjection.get();
+
+            return new ResponseEntity<>(new SubCategoriaDto(s.getIdSubcategoria(), s.getNome(), s.getIdCategoria()), HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(new ApiResposta("erro_consulta", "subcategoria de id " +id+ " nao existe"), HttpStatus.BAD_REQUEST);
+
     }
 
     public ResponseEntity<Object> deletaSubCategoriaPeloId(Long id){
@@ -64,7 +91,7 @@ public class SubCategoriaService {
             this.subCategoriaRepository.deleteById(id);
             return new ResponseEntity<>(new ApiResposta("sucesso_delete","subCategoria id "+id+" deletada com sucesso"), HttpStatus.OK);
         } catch (RuntimeException e) {
-            log.error("erro ao deletar subCategoria com o id");
+            log.error("erro ao deletar subcategoria com o id");
             return new ResponseEntity<>(new ApiResposta("erro_delete","subCategoria id "+id+" nao encontrada"), HttpStatus.BAD_REQUEST);
 
         }

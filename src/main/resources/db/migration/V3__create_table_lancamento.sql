@@ -3,9 +3,9 @@ CREATE TABLE lancamento (
     valor DECIMAL(10,2) NOT NULL,
     data DATE NOT NULL,
     comentario VARCHAR(255),
-    id_subCategoria BIGINT NOT NULL,
+    id_subcategoria BIGINT NOT NULL,
 
-    CONSTRAINT fk_lancamento_subCategoria
-    FOREIGN KEY (id_subCategoria)
-    REFERENCES subCategoria(id_subCategoria)
+    CONSTRAINT fk_lancamento_subcategoria
+    FOREIGN KEY (id_subcategoria)
+    REFERENCES subcategoria(id_subcategoria)
 );

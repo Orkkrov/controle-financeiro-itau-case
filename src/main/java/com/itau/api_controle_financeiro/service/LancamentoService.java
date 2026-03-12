@@ -3,6 +3,7 @@ package com.itau.api_controle_financeiro.service;
 import com.itau.api_controle_financeiro.dtos.LancamentoDto;
 import com.itau.api_controle_financeiro.entity.LancamentoEntity;
 import com.itau.api_controle_financeiro.entity.SubCategoriaEntity;
+import com.itau.api_controle_financeiro.exception.RequisicaoInvalidaException;
 import com.itau.api_controle_financeiro.repository.LancamentoRepository;
 import com.itau.api_controle_financeiro.repository.SubCategoriaRepository;
 import org.slf4j.Logger;
@@ -32,7 +33,7 @@ public class LancamentoService {
     public LancamentoDto salvarLancamento(LancamentoDto dto) {
 
         if (dto.getValor().doubleValue() == 0.0) {
-            throw new IllegalArgumentException("valor deve ser diferente de zero");
+            throw new RequisicaoInvalidaException("valor deve ser diferente de zero");
         }
 
         SubCategoriaEntity subCategoria = subCategoriaRepository
@@ -75,7 +76,7 @@ public class LancamentoService {
 
         LancamentoEntity entity = lancamentoRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("lancamento " + id + " nao existe"));
+                        new RequisicaoInvalidaException("lancamento " + id + " nao existe"));
 
         return new LancamentoDto(
                 entity.getIdLancamento(),
@@ -91,7 +92,7 @@ public class LancamentoService {
         log.info("vai deletar o lancamento {}", id);
 
         if (!lancamentoRepository.existsById(id)) {
-            throw new RuntimeException("lancamento " + id + " nao existe");
+            throw new RequisicaoInvalidaException("lancamento " + id + " nao existe");
         }
 
         lancamentoRepository.deleteById(id);
@@ -103,7 +104,7 @@ public class LancamentoService {
 
         LancamentoEntity entity = lancamentoRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("lancamento " + id + " nao existe"));
+                        new RequisicaoInvalidaException("lancamento " + id + " nao existe"));
 
         entity.setValor(dto.getValor());
         entity.setComentario(dto.getComentario());

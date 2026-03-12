@@ -3,6 +3,7 @@ package com.itau.api_controle_financeiro.service;
 import com.itau.api_controle_financeiro.dtos.SubCategoriaDto;
 import com.itau.api_controle_financeiro.entity.CategoriaEntity;
 import com.itau.api_controle_financeiro.entity.SubCategoriaEntity;
+import com.itau.api_controle_financeiro.exception.RequisicaoInvalidaException;
 import com.itau.api_controle_financeiro.projection.SubCategoriaProjection;
 import com.itau.api_controle_financeiro.repository.SubCategoriaRepository;
 import org.slf4j.Logger;
@@ -27,7 +28,7 @@ public class SubCategoriaService {
     public SubCategoriaDto salvarSubCategoria(SubCategoriaDto dto) {
 
         if (subCategoriaRepository.existsByNome(dto.getNome())) {
-            throw new RuntimeException("subcategoria ja existe");
+            throw new RequisicaoInvalidaException("subcategoria ja existe");
         }
 
         CategoriaEntity categoria = new CategoriaEntity();
@@ -59,7 +60,7 @@ public class SubCategoriaService {
         SubCategoriaProjection projection = subCategoriaRepository
                 .retornaSubCategoriaPeloID(id)
                 .orElseThrow(() ->
-                        new RuntimeException("subcategoria " + id + " nao existe"));
+                        new RequisicaoInvalidaException("subcategoria " + id + " nao existe"));
 
         return toDto(projection);
     }
@@ -69,7 +70,7 @@ public class SubCategoriaService {
         log.info("deletando subcategoria {}", id);
 
         if (!subCategoriaRepository.existsById(id)) {
-            throw new RuntimeException("subcategoria " + id + " nao existe");
+            throw new RequisicaoInvalidaException("subcategoria " + id + " nao existe");
         }
 
         subCategoriaRepository.deleteById(id);
@@ -81,7 +82,7 @@ public class SubCategoriaService {
 
         SubCategoriaEntity entity = subCategoriaRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("subcategoria " + id + " nao existe"));
+                        new RequisicaoInvalidaException("subcategoria " + id + " nao existe"));
 
         entity.setNome(dto.getNome());
 

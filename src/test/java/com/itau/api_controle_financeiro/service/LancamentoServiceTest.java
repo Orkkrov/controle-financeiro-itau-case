@@ -3,6 +3,7 @@ package com.itau.api_controle_financeiro.service;
 import com.itau.api_controle_financeiro.dtos.LancamentoDto;
 import com.itau.api_controle_financeiro.entity.LancamentoEntity;
 import com.itau.api_controle_financeiro.entity.SubCategoriaEntity;
+import com.itau.api_controle_financeiro.exception.RequisicaoInvalidaException;
 import com.itau.api_controle_financeiro.projection.LancamentoProjection;
 import com.itau.api_controle_financeiro.repository.LancamentoRepository;
 import com.itau.api_controle_financeiro.repository.SubCategoriaRepository;
@@ -78,7 +79,7 @@ public class LancamentoServiceTest {
         assertEquals(new BigDecimal("100"), resultado.getValor());
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = RequisicaoInvalidaException.class)
     public void naoDeveSalvarValorZero() {
 
         LancamentoDto dto = new LancamentoDto(

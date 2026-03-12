@@ -1,6 +1,7 @@
 package com.itau.api_controle_financeiro.service;
 
 import com.itau.api_controle_financeiro.entity.CategoriaEntity;
+import com.itau.api_controle_financeiro.exception.RequisicaoInvalidaException;
 import com.itau.api_controle_financeiro.repository.CategoriaRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +24,16 @@ public class CategoriaService {
 
     public CategoriaEntity salvarCategoria(CategoriaEntity categoria) {
 
+        if (categoria.getNome() == null ||
+                categoria.getNome().isEmpty()) {
+            throw new RequisicaoInvalidaException("O campo 'nome' é obrigatório");
+        }
+
+        if(categoriaRepository.findByNome(categoria.getNome()).isPresent()) {
+            throw new RequisicaoInvalidaException("Categoria com esse nome já existe");
+        }
+
+
         log.info("Criando categoria com nome {}", categoria.getNome());
 
         return categoriaRepository.save(categoria);
@@ -41,7 +52,7 @@ public class CategoriaService {
 
         return categoriaRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("Categoria com id " + id + " não encontrada"));
+                        new RequisicaoInvalidaException("Categoria com id " + id + " não encontrada"));
     }
 
     public void deletarCategoria(Long id) {
@@ -49,7 +60,7 @@ public class CategoriaService {
         log.info("Deletando categoria com id {}", id);
 
         if (!categoriaRepository.existsById(id)) {
-            throw new RuntimeException("Categoria com id " + id + " não encontrada");
+            throw new RequisicaoInvalidaException("Categoria com id " + id + " não encontrada");
         }
 
         categoriaRepository.deleteById(id);
@@ -61,7 +72,7 @@ public class CategoriaService {
 
         CategoriaEntity categoria = categoriaRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("Categoria com id " + id + " não encontrada"));
+                        new RequisicaoInvalidaException("Categoria com id " + id + " não encontrada"));
 
         categoria.setNome(categoriaAtualizada.getNome());
 

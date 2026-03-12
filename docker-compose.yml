@@ -3,30 +3,30 @@ version: "3.8"
 services:
 
   mysql:
-    image: mysql:8.4
+    image: mysql:8.0
     container_name: db_case
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: db_controle_financeiro
-      MYSQL_USER: root
-      MYSQL_PASSWORD: 1234
     ports:
       - "3306:3306"
-
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   api:
     build: .
     container_name: api_case
     restart: always
     depends_on:
-      - mysql
+      mysql:
+        condition: service_healthy
     ports:
       - "8080:8080"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/db_controle_financeiro?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/db_controle_financeiro?useSSL=false&serverTimezone=UTC&createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true
       SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: 1234
-
-volumes:
-  mysql_data:
+      SPRING_DATASOURCE_PASSWORD: root

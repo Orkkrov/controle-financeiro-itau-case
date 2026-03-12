@@ -1,20 +1,46 @@
 package com.itau.api_controle_financeiro.controllers;
 
 import com.itau.api_controle_financeiro.dtos.LancamentoDto;
-import org.springframework.http.HttpStatus;
+import com.itau.api_controle_financeiro.service.LancamentoService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.math.BigDecimal;
-import java.util.HashMap;
 
 @RestController
 public class LancamentoController {
 
+    private final LancamentoService lancamentoService;
 
+    public LancamentoController(LancamentoService lancamentoService) {
+        this.lancamentoService = lancamentoService;
+    }
 
     @PostMapping("/lancamento")
     public ResponseEntity<Object> salvaLancamento(@RequestBody LancamentoDto lancamentoDto) {
-        return new ResponseEntity<>(lancamentoDto, HttpStatus.CREATED);
+        return this.lancamentoService.salvaLancamento(lancamentoDto);
     }
+
+
+    @GetMapping("/lancamento")
+    public ResponseEntity<Object> retornaLancamentos() {
+        return this.lancamentoService.retornaLancamentos();
+    }
+
+
+
+    @GetMapping("/lancamento/{id_lancamento}")
+    public ResponseEntity<Object> retornaLancamentoPeloId(@PathVariable Long id_lancamento) {
+        return this.lancamentoService.retornaLancamentoPeloId(id_lancamento);
+    }
+
+    @DeleteMapping("/lancamento/{id_lancamento}")
+    public ResponseEntity<Object> deletaLancamentoPeloId(@PathVariable Long id_lancamento){
+        return this.lancamentoService.deletaLancamentoPeloId(id_lancamento);
+    }
+
+
+    @PutMapping("/lancamento/{id_lancamento}")
+    public ResponseEntity<Object> atualizaLancamento(@PathVariable Long id_lancamento, @RequestBody LancamentoDto dto){
+        return this.lancamentoService.atualizaLancamento(id_lancamento, dto);
+    }
+
 }

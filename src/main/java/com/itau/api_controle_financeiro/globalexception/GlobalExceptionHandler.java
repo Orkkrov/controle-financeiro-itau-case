@@ -1,16 +1,13 @@
 package com.itau.api_controle_financeiro.globalexception;
 
 import com.itau.api_controle_financeiro.dtos.ApiResposta;
-import com.itau.api_controle_financeiro.services.CategoriaService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.servlet.NoHandlerFoundException;
 
 
 @RestControllerAdvice

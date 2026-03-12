@@ -1,7 +1,7 @@
 package com.itau.api_controle_financeiro.controllers;
 
-import com.itau.api_controle_financeiro.entities.CategoriaEntity;
-import com.itau.api_controle_financeiro.services.CategoriaService;
+import com.itau.api_controle_financeiro.entity.CategoriaEntity;
+import com.itau.api_controle_financeiro.service.CategoriaService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

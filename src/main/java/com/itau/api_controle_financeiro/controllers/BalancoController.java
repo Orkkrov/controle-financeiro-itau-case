@@ -1,21 +1,39 @@
 package com.itau.api_controle_financeiro.controllers;
 
-
+import com.itau.api_controle_financeiro.service.BalancoService;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
+import java.time.LocalDate;
 
 @RestController
 public class BalancoController {
+
+    private final BalancoService balancoService;
+
+
+    public BalancoController(BalancoService balancoService) {
+        this.balancoService = balancoService;
+    }
+
     @GetMapping("/balanco")
-    public Map<String , String> retornaBalanco(){
-        Map<String , String> conta = new HashMap<>();
-        conta.put("data_consulta", String.valueOf(LocalDateTime.now()));
-        conta.put("balanco_total", String.valueOf(20000));
-        return conta;
+    public ResponseEntity<Object> consultarBalanco(
+
+            @RequestParam("data_inicio")
+            @DateTimeFormat(pattern = "dd/MM/yyyy")
+            LocalDate dataInicio,
+
+            @RequestParam("data_fim")
+            @DateTimeFormat(pattern = "dd/MM/yyyy")
+            LocalDate dataFim,
+
+            @RequestParam(value = "id_categoria", required = false)
+            Long idCategoria
+    ) {
+
+        return  this.balancoService.consultarBalanco(dataInicio,dataFim,idCategoria );
     }
 }

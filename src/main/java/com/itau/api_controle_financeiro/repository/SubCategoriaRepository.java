@@ -1,7 +1,6 @@
-package com.itau.api_controle_financeiro.repositories;
+package com.itau.api_controle_financeiro.repository;
 
-import com.itau.api_controle_financeiro.dtos.SubCategoriaDto;
-import com.itau.api_controle_financeiro.entities.SubCategoriaEntity;
+import com.itau.api_controle_financeiro.entity.SubCategoriaEntity;
 import com.itau.api_controle_financeiro.projection.SubCategoriaProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

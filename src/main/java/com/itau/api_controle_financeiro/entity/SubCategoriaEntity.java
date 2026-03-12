@@ -1,4 +1,4 @@
-package com.itau.api_controle_financeiro.entities;
+package com.itau.api_controle_financeiro.entity;
 
 
 import javax.persistence.*;

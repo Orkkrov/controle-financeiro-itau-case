@@ -1,11 +1,11 @@
-package com.itau.api_controle_financeiro.services;
+package com.itau.api_controle_financeiro.service;
 
 import com.itau.api_controle_financeiro.dtos.ApiResposta;
 import com.itau.api_controle_financeiro.dtos.SubCategoriaDto;
-import com.itau.api_controle_financeiro.entities.CategoriaEntity;
-import com.itau.api_controle_financeiro.entities.SubCategoriaEntity;
+import com.itau.api_controle_financeiro.entity.CategoriaEntity;
+import com.itau.api_controle_financeiro.entity.SubCategoriaEntity;
 import com.itau.api_controle_financeiro.projection.SubCategoriaProjection;
-import com.itau.api_controle_financeiro.repositories.SubCategoriaRepository;
+import com.itau.api_controle_financeiro.repository.SubCategoriaRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;

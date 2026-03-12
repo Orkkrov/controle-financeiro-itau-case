@@ -1,9 +1,8 @@
-package com.itau.api_controle_financeiro.services;
+package com.itau.api_controle_financeiro.service;
 
 import com.itau.api_controle_financeiro.dtos.ApiResposta;
-import com.itau.api_controle_financeiro.dtos.CategoriaDto;
-import com.itau.api_controle_financeiro.entities.CategoriaEntity;
-import com.itau.api_controle_financeiro.repositories.CategoriaRepository;
+import com.itau.api_controle_financeiro.entity.CategoriaEntity;
+import com.itau.api_controle_financeiro.repository.CategoriaRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;

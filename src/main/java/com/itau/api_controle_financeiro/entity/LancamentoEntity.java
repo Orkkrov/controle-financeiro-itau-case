@@ -1,4 +1,4 @@
-package com.itau.api_controle_financeiro.entities;
+package com.itau.api_controle_financeiro.entity;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -29,8 +29,7 @@ public class LancamentoEntity {
     public LancamentoEntity() {
     }
 
-    public LancamentoEntity(Long idLancamento, BigDecimal valor, LocalDate data, SubCategoriaEntity subcategoria, String comentario) {
-        this.idLancamento = idLancamento;
+    public LancamentoEntity(BigDecimal valor, LocalDate data, SubCategoriaEntity subcategoria, String comentario) {
         this.valor = valor;
         this.data = data;
         this.subcategoria = subcategoria;

@@ -48,6 +48,7 @@ public class SubCategoriaDto {
         return "SubCategoriaDto{" +
                 "nome='" + nome + '\'' +
                 ", idCategoria=" + idCategoria +
+                ", idSubcategoria=" + idSubcategoria +
                 '}';
     }
 }

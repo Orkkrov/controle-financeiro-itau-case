@@ -20,8 +20,8 @@ public class SubCategoriaController {
 
 
     @PostMapping("/subcategoria")
-    public  ResponseEntity<Object> salvaSubcategoria(@RequestBody SubCategoriaDto subCategoriaDto){
-        return this.subCategoriaService.salvaSubCategoria(subCategoriaDto);
+    public  ResponseEntity<Object> salvaSubcategoria(@RequestBody SubCategoriaDto dto){
+        return this.subCategoriaService.salvaSubCategoria(dto);
     }
 
     @GetMapping("/subcategoria")
@@ -40,9 +40,9 @@ public class SubCategoriaController {
     }
 
 
-    @PutMapping("/subcategoria/{id_Subcategoria}")
-    public ResponseEntity<Object> atualizaCategoria(@PathVariable Long id_subcategoria, @RequestBody SubCategoriaEntity subCategoriaEntity){
-        return this.subCategoriaService.atualizaSubCategoria(id_subcategoria,  subCategoriaEntity);
+    @PutMapping("/subcategoria/{id_subcategoria}")
+    public ResponseEntity<Object> atualizaCategoria(@PathVariable Long id_subcategoria, @RequestBody SubCategoriaDto dto){
+        return this.subCategoriaService.atualizaSubCategoria(id_subcategoria,  dto);
     }
 
 }

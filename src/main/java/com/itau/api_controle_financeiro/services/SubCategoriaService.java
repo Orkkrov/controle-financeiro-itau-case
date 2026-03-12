@@ -98,17 +98,21 @@ public class SubCategoriaService {
     }
 
 
-    public ResponseEntity<Object>  atualizaSubCategoria(Long id,SubCategoriaEntity subcategoriaAtualizada) {
+    public ResponseEntity<Object>  atualizaSubCategoria(Long id,SubCategoriaDto dto) {
 
-        log.info("vai atualizar a categoria com o id {} com o nome {}" , id, subcategoriaAtualizada.getNome());
+        log.info("vai atualizar a categoria com o id {} com o nome {}" , id, dto.getNome());
         Optional<SubCategoriaEntity> subcategoriaAntiga = this.subCategoriaRepository.findById(id);
 
         if (!subcategoriaAntiga.isPresent()) return new ResponseEntity<>(new ApiResposta("erro_codigo","id_categoria: " + id + " nao existe"),HttpStatus.NOT_FOUND);
 
-        SubCategoriaEntity subcategoriaNova = new SubCategoriaEntity(subcategoriaAntiga.get().getIdSubcategoria(), subcategoriaAtualizada.getNome());
+        SubCategoriaEntity subcategoriaNova = new SubCategoriaEntity(subcategoriaAntiga.get().getIdSubcategoria(), dto.getNome());
 
-        this.subCategoriaRepository.atualizaSubCategoria(subcategoriaNova.getIdSubcategoria(), subcategoriaNova.getNome());
-        return new ResponseEntity<>(subcategoriaNova,HttpStatus.OK);
+
+        dto.setIdCategoria(subcategoriaAntiga.get().getIdCategoria().getIdCategoria());
+        dto.setIdSubcategoria(id);
+
+        this.subCategoriaRepository.atualizaSubCategoria(dto.getIdSubcategoria(), dto.getNome());
+        return new ResponseEntity<>(dto,HttpStatus.OK);
 
     }
 

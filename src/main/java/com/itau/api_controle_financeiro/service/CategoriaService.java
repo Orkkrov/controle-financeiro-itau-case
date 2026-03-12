@@ -1,83 +1,70 @@
 package com.itau.api_controle_financeiro.service;
 
-import com.itau.api_controle_financeiro.dtos.ApiResposta;
 import com.itau.api_controle_financeiro.entity.CategoriaEntity;
 import com.itau.api_controle_financeiro.repository.CategoriaRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
 public class CategoriaService {
+
     private static final Logger log =
             LoggerFactory.getLogger(CategoriaService.class);
 
-
     private final CategoriaRepository categoriaRepository;
-
 
     public CategoriaService(CategoriaRepository categoriaRepository) {
         this.categoriaRepository = categoriaRepository;
     }
 
-    public ResponseEntity<Object> salvaCategoria(CategoriaEntity categoriaEntity) {
-        try {
-            log.info("vai criar categoria com o nome {}" , categoriaEntity.getNome());
-            categoriaEntity = this.categoriaRepository.save(categoriaEntity);
-        } catch (RuntimeException e) {
-            return new ResponseEntity<>(new ApiResposta("erro_criacao", "categoria "+categoriaEntity.getNome()+" ja existe"), HttpStatus.BAD_REQUEST);
+    public CategoriaEntity salvarCategoria(CategoriaEntity categoria) {
+
+        log.info("Criando categoria com nome {}", categoria.getNome());
+
+        return categoriaRepository.save(categoria);
+    }
+
+    public List<CategoriaEntity> listarCategorias() {
+
+        log.info("Buscando todas as categorias");
+
+        return categoriaRepository.findAll();
+    }
+
+    public CategoriaEntity buscarCategoriaPorId(Long id) {
+
+        log.info("Buscando categoria com id {}", id);
+
+        return categoriaRepository.findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException("Categoria com id " + id + " não encontrada"));
+    }
+
+    public void deletarCategoria(Long id) {
+
+        log.info("Deletando categoria com id {}", id);
+
+        if (!categoriaRepository.existsById(id)) {
+            throw new RuntimeException("Categoria com id " + id + " não encontrada");
         }
 
-        return new ResponseEntity<>(categoriaEntity, HttpStatus.CREATED);
+        categoriaRepository.deleteById(id);
     }
 
+    public CategoriaEntity atualizarCategoria(Long id, CategoriaEntity categoriaAtualizada) {
 
-    public ResponseEntity<Object> retornaCategorias(){
+        log.info("Atualizando categoria {} com nome {}", id, categoriaAtualizada.getNome());
 
-        log.info("vai retornar todas as categorias");
-        return new ResponseEntity<>(this.categoriaRepository.findAll(), HttpStatus.OK) ;
-    }
+        CategoriaEntity categoria = categoriaRepository.findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException("Categoria com id " + id + " não encontrada"));
 
+        categoria.setNome(categoriaAtualizada.getNome());
 
-    public ResponseEntity<Object> retornaCategoriaPeloId(Long id) {
-
-        log.info("vai retornar a categoria com o id{}" , id);
-        Optional<CategoriaEntity> categoria = this.categoriaRepository.findById(id);
-
-        if (categoria.isPresent()) return new ResponseEntity<>(categoria.get(), HttpStatus.OK);
-
-        return  new ResponseEntity<>(new ApiResposta("erro_categoria", "id "+id+" de categoria nao existe"), HttpStatus.BAD_REQUEST);
-    }
-
-
-
-    public ResponseEntity<Object> deletaCategoriaPeloId(Long id) {
-      try{
-            log.info("vai deletar a categoria com o id{}" , id);
-             this.categoriaRepository.deleteById(id);
-             return new ResponseEntity<>(new ApiResposta("resposta" , "categoria excluida"), HttpStatus.OK);
-        }catch (RuntimeException r) {
-          r.printStackTrace();
-            log.warn("categoria com o id{} nao existe" , id);
-            return new ResponseEntity<>(new ApiResposta("erro_deletar","categoria nao existe" ) , HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    public ResponseEntity<Object>  atualizaCategoria(Long id, CategoriaEntity categoriaAtualizada) {
-
-        log.info("vai atualizar a categoria com o id {} com o nome {}" , id, categoriaAtualizada.getNome());
-        Optional<CategoriaEntity> categoriaAntiga = this.categoriaRepository.findById(id);
-
-        if (!categoriaAntiga.isPresent()) return new ResponseEntity<>(new ApiResposta("erro_codigo","id_categoria: " + id + " nao existe"),HttpStatus.NOT_FOUND);
-
-        CategoriaEntity categoriaNova = new CategoriaEntity(categoriaAntiga.get().getIdCategoria(), categoriaAtualizada.getNome());
-
-        this.categoriaRepository.atualizaCategoria(categoriaNova.getIdCategoria(), categoriaNova.getNome());
-        return new ResponseEntity<>(categoriaNova,HttpStatus.OK);
-
+        return categoriaRepository.save(categoria);
     }
 }

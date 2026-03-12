@@ -9,8 +9,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import javax.transaction.Transactional;
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -22,16 +20,6 @@ public interface LancamentoRepository extends JpaRepository<LancamentoEntity, Lo
     List<LancamentoProjection> retornaLancamentos();
 
 
-    @Modifying
-    @Transactional
-    @Query(value = "UPDATE lancamento SET valor = :valor, data = :data, id_subcategoria = :id_subcategoria, comentario = :comentario WHERE id_lancamento = :id", nativeQuery = true)
-    void atualizaLancamento(
-            @Param("id") Long id,
-            @Param("valor") BigDecimal valor,
-            @Param("data") LocalDate data,
-            @Param("id_subcategoria") Long idSubcategoria,
-            @Param("comentario") String comentario
-    );
 
     @Query(value =
             "SELECT " +

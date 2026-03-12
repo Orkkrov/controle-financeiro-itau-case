@@ -27,10 +27,5 @@ public interface SubCategoriaRepository extends JpaRepository<SubCategoriaEntity
 
 
 
-    @Modifying
-    @Transactional
-    @Query(value = "UPDATE subcategoria SET nome = :nomeSubCategoria WHERE id_subcategoria = :id", nativeQuery = true)
-    void atualizaSubCategoria(@Param("id")Long id, @Param("nomeSubCategoria") String nomeSubCategoria);
-
     boolean existsByNome(String nome);
 }

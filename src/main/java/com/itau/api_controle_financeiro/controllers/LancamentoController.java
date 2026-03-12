@@ -2,10 +2,14 @@ package com.itau.api_controle_financeiro.controllers;
 
 import com.itau.api_controle_financeiro.dtos.LancamentoDto;
 import com.itau.api_controle_financeiro.service.LancamentoService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
+@RequestMapping("/lancamentos")
 public class LancamentoController {
 
     private final LancamentoService lancamentoService;
@@ -14,33 +18,47 @@ public class LancamentoController {
         this.lancamentoService = lancamentoService;
     }
 
-    @PostMapping("/lancamento")
-    public ResponseEntity<Object> salvaLancamento(@RequestBody LancamentoDto lancamentoDto) {
-        return this.lancamentoService.salvaLancamento(lancamentoDto);
+    @PostMapping
+    public ResponseEntity<LancamentoDto> criarLancamento(@RequestBody LancamentoDto dto) {
+
+        LancamentoDto lancamento = lancamentoService.salvarLancamento(dto);
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(lancamento);
     }
 
+    @GetMapping
+    public ResponseEntity<List<LancamentoDto>> listarLancamentos() {
 
-    @GetMapping("/lancamento")
-    public ResponseEntity<Object> retornaLancamentos() {
-        return this.lancamentoService.retornaLancamentos();
+        List<LancamentoDto> lancamentos = lancamentoService.listarLancamentos();
+
+        return ResponseEntity.ok(lancamentos);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<LancamentoDto> buscarLancamento(@PathVariable Long id) {
 
+        LancamentoDto lancamento = lancamentoService.buscarLancamentoPorId(id);
 
-    @GetMapping("/lancamento/{id_lancamento}")
-    public ResponseEntity<Object> retornaLancamentoPeloId(@PathVariable Long id_lancamento) {
-        return this.lancamentoService.retornaLancamentoPeloId(id_lancamento);
+        return ResponseEntity.ok(lancamento);
     }
 
-    @DeleteMapping("/lancamento/{id_lancamento}")
-    public ResponseEntity<Object> deletaLancamentoPeloId(@PathVariable Long id_lancamento){
-        return this.lancamentoService.deletaLancamentoPeloId(id_lancamento);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletarLancamento(@PathVariable Long id) {
+
+        lancamentoService.deletarLancamento(id);
+
+        return ResponseEntity.noContent().build();
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<LancamentoDto> atualizarLancamento(
+            @PathVariable Long id,
+            @RequestBody LancamentoDto dto) {
 
-    @PutMapping("/lancamento/{id_lancamento}")
-    public ResponseEntity<Object> atualizaLancamento(@PathVariable Long id_lancamento, @RequestBody LancamentoDto dto){
-        return this.lancamentoService.atualizaLancamento(id_lancamento, dto);
+        LancamentoDto atualizado = lancamentoService.atualizarLancamento(id, dto);
+
+        return ResponseEntity.ok(atualizado);
     }
-
 }

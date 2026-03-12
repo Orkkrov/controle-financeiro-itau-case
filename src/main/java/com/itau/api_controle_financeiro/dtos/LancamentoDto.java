@@ -15,6 +15,9 @@ public class LancamentoDto {
     private Long id_subcategoria;
     private String comentario;
 
+    public LancamentoDto() {
+    }
+
     public LancamentoDto(Long id_lancamento, BigDecimal valor, LocalDate data, Long id_subcategoria, String comentario) {
         this.id_lancamento = id_lancamento;
         this.valor = valor;

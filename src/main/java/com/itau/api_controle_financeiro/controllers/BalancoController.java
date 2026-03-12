@@ -1,26 +1,25 @@
 package com.itau.api_controle_financeiro.controllers;
 
+import com.itau.api_controle_financeiro.dtos.BalancoDto;
 import com.itau.api_controle_financeiro.service.BalancoService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 
 @RestController
+@RequestMapping("/balancos")
 public class BalancoController {
 
     private final BalancoService balancoService;
-
 
     public BalancoController(BalancoService balancoService) {
         this.balancoService = balancoService;
     }
 
-    @GetMapping("/balanco")
-    public ResponseEntity<Object> consultarBalanco(
+    @GetMapping
+    public ResponseEntity<BalancoDto> consultarBalanco(
 
             @RequestParam("data_inicio")
             @DateTimeFormat(pattern = "dd/MM/yyyy")
@@ -34,6 +33,12 @@ public class BalancoController {
             Long idCategoria
     ) {
 
-        return  this.balancoService.consultarBalanco(dataInicio,dataFim,idCategoria );
+        BalancoDto balanco = balancoService.consultarBalanco(
+                dataInicio,
+                dataFim,
+                idCategoria
+        );
+
+        return ResponseEntity.ok(balanco);
     }
 }

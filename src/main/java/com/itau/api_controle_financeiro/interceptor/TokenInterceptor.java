@@ -24,7 +24,7 @@ public class TokenInterceptor implements HandlerInterceptor {
 
         String path = request.getRequestURI();
 
-        if (path.startsWith("/swagger-ui") ||
+        if (path.startsWith("/v1/swagger-ui") ||
                 path.startsWith("/v3/api-docs")) {
 
             return true;

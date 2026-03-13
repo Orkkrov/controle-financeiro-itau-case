@@ -22,6 +22,14 @@ public class TokenInterceptor implements HandlerInterceptor {
                              HttpServletResponse response,
                              Object handler) throws Exception {
 
+        String path = request.getRequestURI();
+
+        if (path.startsWith("/swagger-ui") ||
+                path.startsWith("/v3/api-docs")) {
+
+            return true;
+        }
+
         String token = request.getHeader("api-key");
 
         if (token == null || !token.equals("aXRhw7o=")) {
